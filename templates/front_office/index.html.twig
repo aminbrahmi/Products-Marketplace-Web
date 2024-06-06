@@ -1,0 +1,139 @@
+{% extends 'base_front.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('shopPage1') }}
+    {{ encore_entry_link_tags('shopPage2') }}
+    {{ encore_entry_link_tags('shopPage3') }}
+{% endblock %}
+    
+{% block js %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('app_shop1') }}
+    {{ encore_entry_script_tags('app_shop2') }}
+    {{ encore_entry_script_tags('app_shop3') }}
+{% endblock %}
+
+
+{% block body %}
+<header>
+    <!-- SECTION -->
+    <div class="section">
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+      <!-- container -->
+      <div class="container">
+        <!-- row -->
+        <div class="row">
+          <!-- Search bar and cart logo -->
+<!-- Search bar and cart logo -->
+<div class="search-bar-container">
+    
+{% include 'front_office/searchproduct.html.twig' with{
+  form:form
+} only %}
+
+
+
+
+    <div class="cart-container">
+        <div class="basket-logo">
+            <a href="{{ path('app_panier1_all') }}">
+                <img src="{{ asset('./icons/shopping-cart.png') }}" style="width: 30px; height: 30px;">
+            </a>
+        </div>
+        <div class="cart-text ">
+        <a href="{{ path('app_panier1_all') }}" style="color: #1F75FE; font-weight: 700; text-decoration: none;">
+            Your Cart
+        </a>
+
+
+        </div>
+    </div>
+</div>
+<br>
+    <br><br>
+    <br>
+<!-- /Search bar and cart logo -->
+
+<!-- Products tab & slick -->
+{% for product in products %}
+    <div class="product">
+            <form method="POST" action="{{ path('app_product_add_to_cart', {'id': product.id}) }}">
+
+        <div class="product-img">
+            <td class="column4"><img src="{{ asset('images/products/'~ product.image) }}" width="150px"/></td>
+            <div class="product-label"></div>
+        </div>
+        <div class="product-body">
+            <p class="product-category">{{ product.Category }}</p>
+            <h3 class="product-name">
+                <a href="{{ path('app_product_show', {'id': product.id}) }}">{{ product.name }}</a>
+            </h3>
+            <h4 class="product-price">{{ product.price }}TND</h4>
+            <div class="qty-label">
+                <p class="product-category">Quantity</p>
+                <div class="input-number">
+                    <input type="number" name="quantity" value="1" min="1" required> 
+                    <span class="qty-up">+</span>
+                    <span class="qty-down">-</span>
+                </div>
+            </div>
+        </div>
+        <div class="add-to-cart">
+    <button onclick="addToCart('{{ path('app_panier_add', {'id': product.id}) }}')" class="add-to-cart-btn">
+        <i class="fa fa-shopping-cart"></i> add to cart
+    </button>
+</div>
+</form>
+    </div>
+{% endfor %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const inputField = document.querySelector('input[name="quantity"]');
+        const increaseBtn = document.querySelector('.qty-up');
+        const decreaseBtn = document.querySelector('.qty-down');
+
+        increaseBtn.addEventListener('click', function() {
+            inputField.value = parseInt(inputField.value) + 1;
+        });
+
+        decreaseBtn.addEventListener('click', function() {
+            if (parseInt(inputField.value) > 1) {
+                inputField.value = parseInt(inputField.value) - 1;
+            }
+        });
+    });
+</script>
+<!-- /Products tab & slick -->
+
+        </div>
+        <!-- /row -->
+      </div>
+      <!-- /container -->
+    </div>
+    <!-- /SECTION -->
+
+    <!-- HOT DEAL SECTION -->
+    <div id="hot-deal" class="section">
+      <!-- container -->
+      <div class="container">
+        <!-- row -->
+        <div class="row">
+          <div class="col-md-12">
+            <div class="hot-deal">
+              
+              <h2 class="text-uppercase">Find your product</h2>
+              <p>At Prosync</p>
+            </div>
+          </div>
+        </div>
+        <!-- /row -->
+      </div>
+      <!-- /container -->
+    </div>
+    <!-- /HOT DEAL SECTION -->
+{% endblock %}
